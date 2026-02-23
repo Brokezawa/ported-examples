@@ -1,0 +1,19 @@
+{
+  "name": "simple_analog",
+  "appType": "watchface",
+  "version": "1.0.0",
+  "uuid": "cb670374-3b73-4d44-97e7-68a9ca796359",
+  "platforms": [
+    "aplite",
+    "basalt",
+    "chalk",
+    "diorite",
+    "emery",
+    "flint"
+  ],
+  "capabilities": [],
+  "appKeys": {
+    "JSReady": 0,
+    "WatchReady": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "classio_battery_connection",
+  "appType": "watchface",
+  "version": "1.0.0",
+  "uuid": "15cde2b3-d671-4f82-9f22-8dc597f0276a",
+  "platforms": [
+    "aplite",
+    "basalt",
+    "chalk",
+    "diorite",
+    "emery",
+    "flint"
+  ],
+  "capabilities": [],
+  "appKeys": {
+    "JSReady": 0,
+    "WatchReady": 1
+  }
+}

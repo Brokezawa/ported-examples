@@ -1,0 +1,41 @@
+# Build artifacts
+/build/
+**/build/
+
+# Nim cache and generated C
+/nimcache/
+**/nimcache/
+src/c/
+**/src/c/
+
+# Pebble package artifacts
+*.pbw
+*.raw.bin
+*.elf
+
+# Editor & OS files
+.DS_Store
+*/.DS_Store
+Thumbs.db
+
+# Logs and temp
+.log
+.tmp
+
+# Nimble / waf
+.lock-waf_darwin_build
+
+# IDE files
+.vscode/
+.idea/
+
+# Generated sources
+/src/gen/
+**/src/gen/
+package.json
+appinfo.json
+appinfo.auto.c
+appinfo.auto.h
+build/**/resource_ids.auto.*
+src/js/
+**/src/js/

@@ -1,0 +1,43 @@
+Generating assets...
+  Generated src/gen/app_keys.nim with 2 keys
+✓ Generated src/gen/app_keys.nim
+✓ Generated src/gen/resources.nim
+Building for platforms: basalt
+
+═══ Preparing basalt ═══
+  Running: nim c --compileOnly -d:pebbleBasalt --nimcache:nimcache --path:"/Users/zawa/.nimble/pkgs2/nebble-1.1.0-d510a2bbf9f63f8d5170153f46acf438f6992d7e/src" --path:"src" src/content_indicator_demo.nim
+✓ Nim → C compilation successful
+  Copied 5 files to src/c/basalt/
+✓ Copied Nim-generated C files
+
+  Compiling Nim to JS...
+  Running: nim js -d:release --path:"/Users/zawa/.nimble/pkgs2/nebble-1.1.0-d510a2bbf9f63f8d5170153f46acf438f6992d7e/src" --out:"src/js/pebble-js-app.js" src/pkjs.nim
+✓ Generated package.json
+═══ Running Pebble Build ═══
+  Running: pebble build
+  [1/3] Creating message_key_json:  -> build/js/message_keys.json
+  [2/3] Creating message_key_definitions:  -> build/src/message_keys.auto.c
+  [3/3] Creating message_key_header:  -> build/include/message_keys.auto.h
+  [ 4/19] Creating basalt | resource_ball:  -> build/basalt/system_resources.resball
+  [ 5/19] Creating basalt | /Users/zawa/Projects/pebble/nebble_dev/ported-examples/content_indicator_demo/build/basalt/appinfo.auto.c:  -> build/basalt/appinfo.auto.c
+  [ 6/19] Compiling basalt | subst: ../../../../../Library/Application Support/Pebble SDK/SDKs/current/sdk-core/pebble/common/pebble_app.ld.template -> build/basalt/pebble_app.ld.auto
+  [ 7/19] Compiling basalt | c: src/c/basalt/@pnebble@sui@swindow.nim.c -> build/src/c/basalt/@pnebble@sui@swindow.nim.c.9.o
+  [ 8/19] Compiling basalt | c: src/c/basalt/@pnebble@sffi.nim.c -> build/src/c/basalt/@pnebble@sffi.nim.c.9.o
+  [ 9/19] Compiling basalt | c: src/c/basalt/@mcontent_indicator_demo.nim.c -> build/src/c/basalt/@mcontent_indicator_demo.nim.c.9.o
+  [10/19] Compiling basalt | generate_resource_id_definitions: build/basalt/system_resources.resball -> build/basalt/src/resource_ids.auto.c
+  [11/19] Compiling basalt | c: src/c/basalt/@psystem.nim.c -> build/src/c/basalt/@psystem.nim.c.9.o
+  [12/19] Compiling basalt | c: build/src/message_keys.auto.c -> build/src/message_keys.auto.c.9.o
+  [13/19] Compiling basalt | generate_pbpack: build/basalt/system_resources.resball -> build/basalt/app_resources.pbpack
+  [14/19] Creating basalt | /Users/zawa/Projects/pebble/nebble_dev/ported-examples/content_indicator_demo/build/appinfo.json:  -> build/appinfo.json
+  [15/19] Compiling basalt | generate_resource_id_header: build/basalt/system_resources.resball -> build/basalt/src/resource_ids.auto.h
+  [16/19] Compiling basalt | c: build/basalt/src/resource_ids.auto.c -> build/basalt/src/resource_ids.auto.c.9.o
+  [17/19] Compiling basalt | c: build/basalt/appinfo.auto.c -> build/basalt/appinfo.auto.c.9.o
+  [18/19] Linking basalt | cprogram: build/src/c/basalt/@mcontent_indicator_demo.nim.c.9.o build/src/c/basalt/@pnebble@sffi.nim.c.9.o build/src/c/basalt/@pnebble@sui@swindow.nim.c.9.o build/src/c/basalt/@psystem.nim.c.9.o build/basalt/appinfo.auto.c.9.o build/basalt/src/resource_ids.auto.c.9.o build/src/message_keys.auto.c.9.o -> build/basalt/pebble-app.elf
+  [20/23] Compiling basalt | /Users/zawa/Projects/pebble/nebble_dev/ported-examples/content_indicator_demo/build/basalt/pebble-app.raw.bin: build/basalt/pebble-app.elf -> build/basalt/pebble-app.raw.bin
+  [23/23] Creating basalt | app_bundle:  -> build/content_indicator_demo.pbw
+✓ Pebble build successful
+═══════════════════════════════
+✓ Build complete!
+
+Generated bundle:
+  build/content_indicator_demo.pbw

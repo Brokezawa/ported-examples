@@ -10,11 +10,8 @@
 ## - Responsive layout constants
 
 import nebble
-import nebble/ffi
 import nebble/constants
-import nebble/ui/animation
-import nebble/foundation/logging
-import std/math
+import nebble/ui/unobstructed_area
 
 const
   ANTIALIASING = true
@@ -48,7 +45,7 @@ var
 
 # === Helper Procs ===
 
-proc gColorFromRGB(r, g, b: uint8): GColor8 {.inline.} =
+proc gColorFromRGB(r, g, b: uint8): GColor {.inline.} =
   ## Map 0-255 RGB to Pebble 8-bit color (0b11RRGGBB)
   let rr = (r shr 6) and 0b11
   let gg = (g shr 6) and 0b11
@@ -56,7 +53,7 @@ proc gColorFromRGB(r, g, b: uint8): GColor8 {.inline.} =
   makeGColor8(0b11000000'u8 or (rr shl 4) or (gg shl 2) or bb)
 
 proc animPercentage(dist_normalized: AnimationProgress, maxVal: int): int {.inline.} =
-  (dist_normalized.int * maxVal div ffi.ANIMATION_NORMALIZED_MAX.int)
+  (dist_normalized.int * maxVal div ANIMATION_NORMALIZED_MAX.int)
 
 proc hoursToMinutes(hours_out_of_12: int): int {.inline.} =
   (hours_out_of_12 * 60 div 12)
@@ -86,7 +83,7 @@ proc animate(duration, delay: int, implementation: ptr AnimationImplementation, 
   anim.delay = delay.uint32
   anim.setCurve(constants.AnimationCurveEaseInOut)
   
-  discard animation_set_implementation(anim.toPtr, implementation)
+  anim.setImplementation(implementation)
   
   if handlers:
     anim.setHandlers(onStarted = animationStarted, onStopped = animationStopped)
@@ -101,8 +98,8 @@ proc updateProc(layer: ptr Layer, ctx: ptr GContext) {.cdecl.} =
   let full_bounds = layer.bounds
   
   # Cross-platform unobstructed bounds using FFI function if available
-  let bounds = when declared(ffi.layer_get_unobstructed_bounds):
-                 ffi.layer_get_unobstructed_bounds(layer)
+  let bounds = when declared(getUnobstructedBounds):
+                 getUnobstructedBounds(layer)
                else:
                  full_bounds
                   
@@ -137,12 +134,12 @@ proc updateProc(layer: ptr Layer, ctx: ptr GContext) {.cdecl.} =
   hour_angle += (minute_angle * (constants.TRIG_MAX_ANGLE.int32 div 12)) div constants.TRIG_MAX_ANGLE.int32
 
   let minute_hand = makeGPoint(
-    (sin_lookup(minute_angle).int32 * (s_radius.int32 - HAND_MARGIN) div ffi.TRIG_MAX_RATIO.int32).int16 + s_center.x,
-    (-cos_lookup(minute_angle).int32 * (s_radius.int32 - HAND_MARGIN) div ffi.TRIG_MAX_RATIO.int32).int16 + s_center.y
+    (sin_lookup(minute_angle).int32 * (s_radius.int32 - HAND_MARGIN) div TRIG_MAX_RATIO.int32).int16 + s_center.x,
+    (-cos_lookup(minute_angle).int32 * (s_radius.int32 - HAND_MARGIN) div TRIG_MAX_RATIO.int32).int16 + s_center.y
   )
   let hour_hand = makeGPoint(
-    (sin_lookup(hour_angle).int32 * (s_radius.int32 - (2 * HAND_MARGIN)) div ffi.TRIG_MAX_RATIO.int32).int16 + s_center.x,
-    (-cos_lookup(hour_angle).int32 * (s_radius.int32 - (2 * HAND_MARGIN)) div ffi.TRIG_MAX_RATIO.int32).int16 + s_center.y
+    (sin_lookup(hour_angle).int32 * (s_radius.int32 - (2 * HAND_MARGIN)) div TRIG_MAX_RATIO.int32).int16 + s_center.x,
+    (-cos_lookup(hour_angle).int32 * (s_radius.int32 - (2 * HAND_MARGIN)) div TRIG_MAX_RATIO.int32).int16 + s_center.y
   )
 
   if s_radius > 2 * HAND_MARGIN:
@@ -210,9 +207,8 @@ nebbleWatchface:
   init:
     s_canvas_layer = canvasLayer.toHandle() # Unowned reference for global state
     
-    # Initialize time using FFI API
-    var now_t = ffi.time(nil)
-    let t = ffi.localtime(addr now_t)
+    # Initialize time using high-level API
+    let t = getLocalTime()
     tickHandler(t, TimeUnits.MINUTE_UNIT)
     
     # Setup radius using high-level bounds property
@@ -232,5 +228,3 @@ nebbleWatchface:
     )
     when declared(unobstructed_area_service_subscribe):
       unobstructed_area_service_subscribe(s_unobstructed_handlers, nil)
-    
-    logInfo("KS Clock Face Initialized")

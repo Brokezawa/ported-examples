@@ -12,7 +12,6 @@
 import nebble
 import nebble/ui/clicks
 import nebble/util/fixed_strings
-import nebble/foundation/logging
 import gen/resources
 
 const
@@ -108,8 +107,6 @@ nebbleApp:
     
     # Update text after layers are created
     updateText()
-    
-    logInfo("Feature Persist Counter Initialized")
 
 # Event Handlers
 

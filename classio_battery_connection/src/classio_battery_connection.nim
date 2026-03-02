@@ -18,7 +18,6 @@ import nebble
 import nebble/util/fixed_strings
 import nebble/foundation/events/battery
 import nebble/foundation/events/connection
-import nebble/foundation/logging
 
 # Text buffers using FixedString for zero heap allocations
 var
@@ -35,8 +34,11 @@ proc updateConnection(connected: bool) {.cdecl.}
 const
   BaseHeight = 168
   ScaleY = platform.PBLDisplayHeight.float / BaseHeight.float
+  
+  # Additional offset for high-res rect displays to center content vertically
+  HighResOffsetY = platform.pblIfHighResRectElse(20, 0)
 
-proc sY(y: int): int16 {.inline.} = int16(y.float * ScaleY)
+proc sY(y: int): int16 {.inline.} = int16((y.float * ScaleY) + HighResOffsetY)
 
 # Declarative Watchface Definition
 nebbleWatchface:
@@ -49,9 +51,9 @@ nebbleWatchface:
     id = timeLayer
     fullWidth = true
     y = sY(40)
-    h = 34
+    h = if platform.isHighRes: 50 else: 34
     text = "00:00:00"
-    font = FONT_KEY_GOTHIC_28_BOLD
+    font = if platform.isHighRes: FONT_KEY_BITHAM_42_BOLD else: FONT_KEY_GOTHIC_28_BOLD
     color = GColorWhite
     alignment = GTextAlignmentCenter
     backgroundColor = GColorClear
@@ -60,10 +62,10 @@ nebbleWatchface:
   textLayer:
     id = connectionLayer
     fullWidth = true
-    y = sY(90)
-    h = 24
+    y = sY(100)
+    h = if platform.isHighRes: 30 else: 24
     text = ""
-    font = FONT_KEY_GOTHIC_18
+    font = if platform.isHighRes: FONT_KEY_GOTHIC_24 else: FONT_KEY_GOTHIC_18
     color = GColorWhite
     alignment = GTextAlignmentCenter
     backgroundColor = GColorClear
@@ -72,10 +74,10 @@ nebbleWatchface:
   textLayer:
     id = batteryLayer
     fullWidth = true
-    y = sY(120)
-    h = 24
+    y = sY(135)
+    h = if platform.isHighRes: 30 else: 24
     text = ""
-    font = FONT_KEY_GOTHIC_18
+    font = if platform.isHighRes: FONT_KEY_GOTHIC_24 else: FONT_KEY_GOTHIC_18
     color = GColorWhite
     alignment = GTextAlignmentCenter
     backgroundColor = GColorClear
@@ -95,8 +97,6 @@ nebbleWatchface:
 
     # Subscribe to bluetooth connection changes using high-level API
     connection.subscribe(updateConnection)
-    
-    logInfo("Classio Battery Connection Initialized")
 
 # Event Handlers
 

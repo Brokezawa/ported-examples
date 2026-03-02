@@ -10,7 +10,6 @@
 
 import nebble
 import nebble/graphics/font_ref
-import nebble/foundation/logging
 import gen/resources
 
 var customFont: GFontRef
@@ -21,22 +20,20 @@ nebbleApp:
   
   textLayer:
     id = textLayer
-    fullWidth = true
-    fullHeight = true
-    text = pblIfRoundElse("Hello, World!", "  Hello,\n  World!")
+    x = 0
+    y = 0
+    w = platform.PBLDisplayWidth
+    h = platform.PBLDisplayHeight
+    text = if platform.isHighRes: "Hello,\nWorld!" else: pblIfRoundElse("Hello, World!", "  Hello,\n  World!")
     font = nil
     color = GColorBlack
-    alignment = pblIfRoundElse(GTextAlignmentCenter, GTextAlignmentLeft)
+    alignment = if platform.isHighRes or platform.isRound: GTextAlignmentCenter else: GTextAlignmentLeft
     backgroundColor = GColorClear
   
   init:
     customFont = loadFontRef(RESOURCE_ID_FONT_OSP_DIN_44)
     if customFont.isValid:
       textLayer.font = customFont.font
-    else:
-      logError("Failed to load custom font")
     
-    when defined(pebbleChalk) or defined(pebbleEmery):
+    when defined(pebbleChalk) or defined(pebbleEmery) or defined(pebbleGabbro):
       textLayer.enableScreenTextFlowAndPaging(8)
-    
-    logInfo("Custom Font Demo Initialized")

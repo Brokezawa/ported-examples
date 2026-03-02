@@ -12,7 +12,6 @@
 import nebble
 import nebble/ui/content_indicator
 import nebble/ui/scroll_layer
-import nebble/foundation/logging
 
 const content = """Cupcake
 
@@ -72,12 +71,9 @@ nebbleApp:
     w = platform.PBLDisplayWidth
     h = platform.StatusBarLayerHeight.int16
 
-  init:
-    logInfo("Content Indicator Demo initialized")
-
   onLoad:
     # Setup scroll layer click config and hide shadow
-    mainScrollLayer.setClickConfigOntoWindow(pebbleWindow.toPtr)
+    mainScrollLayer.setClickConfigOntoWindow(pebbleWindow)
     mainScrollLayer.setShadowHidden(true)
 
     # Calculate and set content size based on text
@@ -106,8 +102,5 @@ nebbleApp:
         alignment = GAlignCenter,
         timesOut = false
       )
-    else:
-      logError("Failed to get content indicator")
-
   deinit:
-    logInfo("Content Indicator Demo deinitialized")
+    discard

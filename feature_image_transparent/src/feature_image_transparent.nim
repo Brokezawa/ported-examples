@@ -15,7 +15,6 @@ import nebble/graphics/graphics
 import nebble/ui/bitmap_layer
 import nebble/ui/text_layer
 import nebble/ui/layer
-import nebble/foundation/logging
 import gen/resources
 import nebble/util/fixed_strings
 
@@ -49,9 +48,6 @@ nebbleApp:
   window:
     backgroundColor = GColorWhite
   
-  init:
-    logInfo("Image Transparent Demo Initialized")
-  
   onLoad:
     let windowLayer = pebbleWindow.rootLayer()
     let bounds = windowLayer.bounds
@@ -78,8 +74,6 @@ nebbleApp:
     pandaBitmap = newBitmapRef(RESOURCE_ID_IMAGE_PANDA)
     
     if pandaBitmap.isValid:
-      logInfo("Panda bitmap loaded, size: " & $pandaBitmap.size().w & "x" & $pandaBitmap.size().h)
-      
       let center = bounds.centerPoint()
       let imgSize = pandaBitmap.size()
       
@@ -95,6 +89,3 @@ nebbleApp:
       bmpLayer.compositingMode = GCompOpSet
       
       windowLayer.addChild(bmpLayer.getLayer())
-      logInfo("Bitmap layer added")
-    else:
-      logError("Failed to load panda bitmap")

@@ -1,5 +1,7 @@
 # Ported Pebble Examples (Nebble)
 
+[![CI](https://github.com/Brokezawa/ported-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/Brokezawa/ported-examples/actions/workflows/ci.yml)
+
 This directory contains a selection of official Pebble SDK examples ported to the Nebble (Nim) framework. These examples demonstrate how to use Nebble's high-level API and declarative DSL to create Pebble applications and watchfaces with minimal boilerplate and enhanced type safety.
 
 ## 📋 Prerequisites

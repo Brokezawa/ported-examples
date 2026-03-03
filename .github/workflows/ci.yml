@@ -65,6 +65,7 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           export PATH="$HOME/.local/bin:$PATH"
+          set +e  # Don't exit on error
 
           EXAMPLES=(
             "simple_analog"

@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-examples:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        platform: [basalt, aplite]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Nim
+        uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: '2.2.6'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Cache Pebble SDK
+        if: runner.os != 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ~/.pebble-sdk
+          key: pebble-sdk-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            pebble-sdk-${{ runner.os }}-
+
+      - name: Install pebble-tool
+        if: runner.os != 'Windows'
+        run: |
+          python -m pip install --user pebble-tool
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install Pebble SDK
+        if: runner.os != 'Windows'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          pebble sdk install latest
+
+      - name: Add ARM toolchain to PATH
+        if: runner.os != 'Windows'
+        run: |
+          TOOL_PATH=$(find $HOME/.pebble-sdk -type f -name arm-none-eabi-size -exec dirname {} \; | head -n 1)
+          if [ -n "$TOOL_PATH" ]; then
+            echo "$TOOL_PATH" >> $GITHUB_PATH
+          fi
+
+      - name: Install Nebble
+        run: nimble install nebble -y
+
+      - name: Build Examples
+        if: runner.os != 'Windows'
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+
+          EXAMPLES=(
+            "simple_analog"
+            "feature_persist_counter"
+            "pdc_image"
+            "content_indicator_demo"
+          )
+
+          SUCCESS=0
+          FAILED=0
+
+          for example in "${EXAMPLES[@]}"; do
+            echo "========================================"
+            echo "Building $example for ${{ matrix.platform }}"
+            echo "========================================"
+
+            cd "$example"
+            if nebble build --platform ${{ matrix.platform }}; then
+              echo "✓ $example built successfully"
+              ((SUCCESS++))
+            else
+              echo "✗ $example failed to build"
+              ((FAILED++))
+            fi
+            cd ..
+          done
+
+          echo ""
+          echo "========================================"
+          echo "Build Results:"
+          echo "  Successful: $SUCCESS"
+          echo "  Failed: $FAILED"
+          echo "========================================"
+
+          if [ $FAILED -gt 0 ]; then
+            exit 1
+          fi
+
+  verify-structure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify example structure
+        run: |
+          ERRORS=0
+
+          for dir in */; do
+            # Skip hidden directories
+            if [[ "$dir" == .*/ ]]; then
+              continue
+            fi
+
+            echo "Checking $dir..."
+
+            if [ ! -d "${dir}src" ]; then
+              echo "  ✗ Missing src/"
+              ((ERRORS++))
+            fi
+
+            if [ ! -f "${dir}nim.cfg" ]; then
+              echo "  ✗ Missing nim.cfg"
+              ((ERRORS++))
+            fi
+
+            if [ ! -f "${dir}package.json" ]; then
+              echo "  ✗ Missing package.json"
+              ((ERRORS++))
+            fi
+
+            echo "  ✓ Structure valid"
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "Found $ERRORS structural errors"
+            exit 1
+          fi

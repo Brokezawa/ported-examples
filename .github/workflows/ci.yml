@@ -54,7 +54,12 @@ jobs:
             export PATH="$HOME/Library/Python/3.13/bin:$PATH"
           fi
           
-          pebble sdk install latest
+          # Skip install if SDK is already cached
+          if [ ! -d "$HOME/.pebble-sdk/SDKs/current" ]; then
+            pebble sdk install latest
+          else
+            echo "✓ Pebble SDK already cached"
+          fi
 
       - name: Add ARM toolchain to PATH
         if: runner.os != 'Windows'

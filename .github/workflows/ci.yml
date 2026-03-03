@@ -52,6 +52,9 @@ jobs:
           # On macOS, pip --user installs to ~/Library/Python/*/bin
           if [[ "$RUNNER_OS" == "macOS" ]]; then
             export PATH="$HOME/Library/Python/3.13/bin:$PATH"
+            echo "$HOME/Library/Python/3.13/bin" >> $GITHUB_PATH
+          else
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
           fi
           
           # Skip install if SDK is already cached
@@ -61,13 +64,10 @@ jobs:
             echo "✓ Pebble SDK already cached"
           fi
 
-      - name: Add ARM toolchain to PATH
+      - name: Add pebble-sdk to path
         if: runner.os != 'Windows'
         run: |
-          TOOL_PATH=$(find $HOME/.pebble-sdk -type f -name arm-none-eabi-size -exec dirname {} \; | head -n 1)
-          if [ -n "$TOOL_PATH" ]; then
-            echo "$TOOL_PATH" >> $GITHUB_PATH
-          fi
+          echo "$HOME/.pebble-sdk/bin" >> $GITHUB_PATH
 
       - name: Install Nebble
         run: nimble install nebble -y

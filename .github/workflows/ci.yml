@@ -21,7 +21,7 @@ jobs:
       - name: Setup Nim
         uses: jiro4989/setup-nim-action@v2
         with:
-          nim-version: '2.2.6'
+          nim-version: '2.2.8'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
@@ -48,6 +48,12 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           export PATH="$HOME/.local/bin:$PATH"
+          
+          # On macOS, pip --user installs to ~/Library/Python/*/bin
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            export PATH="$HOME/Library/Python/3.13/bin:$PATH"
+          fi
+          
           pebble sdk install latest
 
       - name: Add ARM toolchain to PATH

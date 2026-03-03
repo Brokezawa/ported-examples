@@ -1,0 +1,32 @@
+{
+  "name": "feature_custom_font",
+  "version": "1.0.0",
+  "author": "Nebble",
+  "private": true,
+  "pebble": {
+    "uuid": "f74e8386-516f-430b-9f03-d5b1abe87965",
+    "displayName": "feature_custom_font",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "resources": {
+      "media": [
+        {
+          "type": "font",
+          "name": "FONT_OSP_DIN_44",
+          "file": "fonts/osp-din/OSP-DIN_44.ttf"
+        }
+      ]
+    }
+  }
+}

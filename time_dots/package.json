@@ -1,0 +1,26 @@
+{
+  "name": "time_dots",
+  "version": "1.0.0",
+  "author": "Nebble",
+  "private": true,
+  "pebble": {
+    "uuid": "cb670374-3b73-4d44-97e7-68a9ca796360",
+    "displayName": "time_dots",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "resources": {
+      "media": []
+    }
+  }
+}

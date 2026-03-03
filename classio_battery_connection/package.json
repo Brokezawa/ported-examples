@@ -1,0 +1,26 @@
+{
+  "name": "classio_battery_connection",
+  "version": "1.0.0",
+  "author": "Nebble",
+  "private": true,
+  "pebble": {
+    "uuid": "15cde2b3-d671-4f82-9f22-8dc597f0276a",
+    "displayName": "classio_battery_connection",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "resources": {
+      "media": []
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "pdc_image",
+  "version": "1.0.0",
+  "author": "Nebble",
+  "private": true,
+  "pebble": {
+    "uuid": "cb670374-3b73-4d44-97e7-68a9ca796361",
+    "displayName": "pdc_image",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "resources": {
+      "media": [
+        {
+          "type": "raw",
+          "name": "DRAW_COMMAND",
+          "file": "images/draw_command.pdc"
+        }
+      ]
+    }
+  }
+}

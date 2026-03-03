@@ -1,0 +1,26 @@
+{
+  "name": "content_indicator_demo",
+  "version": "1.0.0",
+  "author": "Nebble",
+  "private": true,
+  "pebble": {
+    "uuid": "84343463-ad24-4484-9fd9-c02badfdc9da",
+    "displayName": "content_indicator_demo",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "resources": {
+      "media": []
+    }
+  }
+}

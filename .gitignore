@@ -32,7 +32,6 @@ Thumbs.db
 # Generated sources
 /src/gen/
 **/src/gen/
-package.json
 appinfo.json
 appinfo.auto.c
 appinfo.auto.h
